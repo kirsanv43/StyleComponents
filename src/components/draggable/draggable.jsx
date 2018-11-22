@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
 import { Record } from '../record';
+import DragableIndicator from './dragableIndicator';
 
 const DraggableContainer = styled.div`
   display: flex;
@@ -10,12 +11,12 @@ const DraggableContainer = styled.div`
   justify-content: space-between;
   align-items: center;
   width: 344px;
+  touch-action: none;
 `;
 
 const DraggableItem = styled.div`
   width: 10px;
   height: 19px;
-  background: red;
   margin-top: 17px;
 `;
 
@@ -47,6 +48,8 @@ export const Draggable = ({
     draggable
   >
     <Record {...props} />
-    <DraggableItem />
+    <DraggableItem>
+      <DragableIndicator />
+    </DraggableItem>
   </DraggableContainer>
 );

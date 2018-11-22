@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
 import styled from 'styled-components';
 import { Container, Draggable, AddBtn, Input } from '../components';
+import { throws } from 'assert';
 
 const Records = styled.div`
   position: relative;
@@ -31,11 +32,7 @@ class List extends Component {
   };
 
   handleDelete = e => {
-    this.setState({
-      records: this.props.records.filter(
-        item => item !== e.currentTarget.dataset.id
-      )
-    });
+    this.props.removeRecord(e.currentTarget.dataset.id)
   };
 
   onDragStart = ev => {
@@ -109,18 +106,15 @@ class List extends Component {
     );
     const { records } = this.props;
     const position = e.touches[0].clientY - this.state.offset - marginTop;
-    const index = Math.floor(e.touches[0].clientY / recordHeight);
+    const index = Math.floor((e.touches[0].clientY - this.state.offset) / recordHeight);
     if (dragItemIndex !== index && index < records.length && index >= 0) {
-      console.log({
-        currentIndex: dragItemIndex,
-        targetIndex: index
-      });
       this.props.swapRecords({
         currentIndex: dragItemIndex,
         targetIndex: index
       });
     }
     record.style.top = `${position}px`;
+    e.preventDefault()
   };
 
   handleChange = e => {
@@ -162,7 +156,7 @@ class List extends Component {
         </Records>
 
         <AddBtn onClick={this.handleAdd}>Add a statement +</AddBtn>
-        <Input value={this.state.input} onInput={this.handleChange} />
+        <Input value={this.state.input} onChange={this.handleChange} />
       </Container>
     );
   }
