@@ -18,6 +18,7 @@ const DraggableItem = styled.div`
   width: 10px;
   height: 19px;
   margin-top: 17px;
+  margin-right: 6px;
 `;
 
 export const Draggable = ({

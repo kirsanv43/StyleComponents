@@ -1,15 +1,10 @@
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
 import styled from 'styled-components';
-import { Container, Draggable, AddBtn, Input } from '../components';
+import { Container, Draggable, AddBtn, Input, Records } from '../components';
 import { throws } from 'assert';
 
-const Records = styled.div`
-  position: relative;
-  overscroll-behavior: contain;
-`;
-
-const marginTop = 40;
+const marginTop = 0;
 class List extends Component {
   constructor(props) {
     super(props);
@@ -32,7 +27,7 @@ class List extends Component {
   };
 
   handleDelete = e => {
-    this.props.removeRecord(e.currentTarget.dataset.id)
+    this.props.removeRecord(e.currentTarget.dataset.id);
   };
 
   onDragStart = ev => {
@@ -72,6 +67,9 @@ class List extends Component {
 
     const rect = e.currentTarget.getBoundingClientRect();
     const style = window.getComputedStyle(e.currentTarget);
+    const { top: containerMargin } = ReactDOM.findDOMNode(
+      this.container.current
+    ).getBoundingClientRect();
     const offset = e.touches[0].clientY - rect.top;
     const dragItemIndex = this.props.records.findIndex(
       item => item.id === e.currentTarget.dataset.id
@@ -80,7 +78,7 @@ class List extends Component {
     this.setState({
       touch: true,
       offset,
-      top: e.touches[0].clientY - offset - marginTop,
+      top: e.touches[0].clientY - offset - containerMargin,
       touchedItem: this.props.records[dragItemIndex]
     });
   };
@@ -98,15 +96,17 @@ class List extends Component {
       return;
     }
     const { height: recordHeight } = record.getBoundingClientRect();
-    const { height } = ReactDOM.findDOMNode(
+    const { height, top: containerMargin } = ReactDOM.findDOMNode(
       this.container.current
     ).getBoundingClientRect();
     const dragItemIndex = this.props.records.findIndex(
       item => item.id === e.currentTarget.dataset.id
     );
     const { records } = this.props;
-    const position = e.touches[0].clientY - this.state.offset - marginTop;
-    const index = Math.floor((e.touches[0].clientY - this.state.offset) / recordHeight);
+    const position = e.touches[0].clientY - this.state.offset - containerMargin;
+    const index = Math.floor(
+      (e.touches[0].clientY - this.state.offset) / recordHeight
+    );
     if (dragItemIndex !== index && index < records.length && index >= 0) {
       this.props.swapRecords({
         currentIndex: dragItemIndex,
@@ -114,7 +114,7 @@ class List extends Component {
       });
     }
     record.style.top = `${position}px`;
-    e.preventDefault()
+    e.preventDefault();
   };
 
   handleChange = e => {

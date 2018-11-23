@@ -1,11 +1,14 @@
 import styled from 'styled-components';
+import { CellStyle } from '../cell';
 
-export const RecordStyle = styled.div`
+export const RecordStyle = styled(CellStyle)`
   display: flex;
   justify-content: space-between;
-  height: 100%;
+  width: 294px;
   padding: 0 10px;
   align-items: center;
+  border: solid 2px rgba(4,38,85,0.25);
+  background: rgba(4,38,85,0.05);
 `;
 
 export const DeleteButton = styled.button`

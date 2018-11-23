@@ -12,5 +12,3 @@ export const CellStyle = styled.div`
     cursor: ${props => (props.hoverable ? 'pointer' : 'default')};
   }
 `;
-
-export const Cell = props => <CellStyle {...props} />;
